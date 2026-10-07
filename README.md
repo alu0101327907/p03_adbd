@@ -42,6 +42,12 @@ Representa cada uno de los productos que comercializa Tajinaste S.A., incluyendo
 * **Nombre del producto:** nombre utilizado para identificar el producto.
   **Ejemplos:** `"Rosal rojo"`, `"Maceta de cerámica"`, `"Tierra para plantas"`.
 
+* **Precio:** coste de venta del producto.
+  **Ejemplos:** `"12,50€"`.
+
+* **Tipo:** categoría a la que pertenece el producto.
+  **Ejemplos:** `"Planta"`, `"Decoración"`.
+
 ## Empleado
 
 Representa a cada una de las personas que trabajan para Tajinaste S.A. Los empleados pueden ser destinados a diferentes viveros dependiendo de la época del año. Además, se registra el histórico de los puestos y zonas en los que han trabajado.
@@ -52,10 +58,13 @@ Representa a cada una de las personas que trabajan para Tajinaste S.A. Los emple
   **Ejemplo:** `12345678A`.
 
 * **Nombre:** nombre del empleado.
-  **Ejemplo:** `"Juan"`.
+  **Ejemplo:** `"Juan García López"`.
 
-* **Apellidos:** apellidos del empleado.
-  **Ejemplo:** `"García López"`.
+* **Teléfono:** número de contacto del empleado.
+  **Ejemplo:** `"600123456"`.
+
+* **Dirección:** domicilio del empleado.
+  **Ejemplos:** `"Calle alguna, 12, Santa Cruz"`.
 
 ## Cliente
 
@@ -67,10 +76,31 @@ Representa a las personas que realizan compras en Tajinaste S.A. Los clientes pu
   **Ejemplo:** `87654321B`.
 
 * **Nombre:** nombre del cliente.
-  **Ejemplo:** `"María"`.
+  **Ejemplo:** `"María Rodríguez Pérez"`.
 
-* **Apellidos:** apellidos del cliente.
-  **Ejemplo:** `"Rodríguez Pérez"`.
+* **Dirección:** domicilio del cliente.
+  **Ejemplo:** `"Calle alguna, 20, La Laguna"`.
+
+* **Email:** correo electrónico de contacto.
+  **Ejemplo:** `"m.rodrig@gmail.com"`.
+
+* **fecha_plus:** fecha en la que el cliente se dio de alta en el programa de fidelización Tajinaste Plus.
+  **Ejemplo:** `"15/04/2026"`.
+
+## Bonificación
+
+Representa las recompensas asignadas a los clientes del programa Tajinaste Plus según el volumen de sus compras. Es una entidad débil que depende de Cliente.
+
+**Atributos:**
+
+* **Mes:** indica el mes al que corresponde el cálculo de las compras.
+  **Ejemplo:** `10/2026`.
+
+* **Volumen:** total del importe de las compras acumuladas por el cliente durante ese mes.
+  **Ejemplo:** `"350,00 €"`.
+
+* **Bonificación:** cantidad económica asignado como premio al cliente.
+  **Ejemplo:** `"15,00 €"`.
 
 ## Pedido
 
@@ -81,11 +111,14 @@ Representa cada una de las compras realizadas por los clientes de Tajinaste S.A.
 * **id_pedido:** código único que permite identificar cada pedido.
   **Ejemplo:** `PED001`.
 
-* **Fecha del pedido:** fecha en la que se realizó el pedido.
+* **Fecha:** fecha en la que se realizó el pedido.
   **Ejemplo:** `07/10/2026`.
 
 * **Importe:** cantidad económica correspondiente al pedido.
   **Ejemplo:** `125,50 €`.
+
+* **Responsable:** referencia al empleado que se encarga de la gestión de este pedido en concreto.
+  **Ejemplo:** `12345678A`.
 
 # 2. Relaciones
 
@@ -96,6 +129,12 @@ Cardinalidad 1:N
 ## Cliente — realiza — Pedido
 
 Cardinalidad 1:N
+
+## Cliente - recibe - Bonificación
+
+Un cliente puede recibir varias bonificaciones a lo largo de los meses, pero cada registro de bonificación mensual pertenece a un único cliente.
+
+Cardinalidad 1:N 
 
 ## Producto — está asignado a — Zona
 
@@ -128,7 +167,7 @@ Cardinalidad N:M
 * **fecha1:** fecha hasta la que el empleado realiza la tarea en esa zona.
   **Ejemplo:** `31/05/2026`.
 
-Cardinalidad ???
+Cardinalidad N:M
 
 ## Empleado — gestiona — Pedido
 
@@ -157,4 +196,13 @@ Por tanto:
 **Georreferenciación = (latitud, longitud)**
 
 Este atributo aparece tanto en **Vivero** como en **Zona**.
+
+# 4. Restricciones semánticas
+
+* **Empleado - Vivero:** Un empleado solo puede tener un destino activo simultáneamente. Por lo tanto, se establece la restricción de que las fechas `fecha0` y `fecha1` de un mismo empleado no pueden solaparse en el tiempo.
+* **Entidades Débiles:** Entidades cuya existencia depende de una entidad fuerte:
+  * **Zona:** dependiente de **Vivero**. Una zona no puede existir si no está asociada a un vivero concreto.
+  * **Bonificación:** dependiente de **Cliente**. No existe de manera aislada, siempre debe pertenecer al cliente que generó ese beneficio.
+
+* **Programa Tajinaste Plus:** La generación de bonificaciones están restringidas a aquellos clientes que pertenecen al programa Tajinaste Plus. Por lo que solo los clientes que tengan un valor asignado en el atributo `fecha_plus` podrán participar en la relación **recibe** asociada a la entidad **Bonificación**
 
