@@ -123,11 +123,12 @@ Representa cada una de las compras realizadas por los clientes de Tajinaste S.A.
 # 2. Relaciones
 
 ## Vivero — tiene — Zona
+Relación estructural, indica las diferentes áreas o espacios físicos en los que se divide un vivero concreto.
 
 Cardinalidad 1:N
 
 ## Cliente — realiza — Pedido
-
+Relación que asocia a un cliente con las compras que ha efectuado en la empresa.
 Cardinalidad 1:N
 
 ## Cliente - recibe - Bonificación
@@ -137,14 +138,14 @@ Un cliente puede recibir varias bonificaciones a lo largo de los meses, pero cad
 Cardinalidad 1:N 
 
 ## Producto — está asignado a — Zona
-
+Relación que indica en qué partes específicas de los viveros se ubica o almacena cada producto del catálogo.
 * **Cantidad disponible:** cantidad de unidades de un determinado producto que están disponibles en una zona concreta. Es un atributo de la relación porque la cantidad puede variar dependiendo de la zona.
   **Ejemplo:** el producto `"Rosal rojo"` tiene `150` unidades disponibles en la zona `"Almacén"` y `75` unidades en la zona `"Exterior"`.
   
 Cardinalidad N:M
 
 ## Empleado — destinado en — Vivero
-
+Registra el histórico de asignaciones generales de los trabajadores a los distintos centros de la empresa según la época del año.
 * **fecha0:** fecha en la que el empleado comienza a estar destinado en un determinado vivero.
   **Ejemplo:** `01/01/2026`.
   
@@ -152,12 +153,12 @@ Cardinalidad N:M
   **Ejemplo:** `09/01/2026`.
 
 * **Puesto:** puesto que ocupa en el vivero.
-  **Ejemplo:** `30/06/2026`.
+  **Ejemplo:** `"Responsable de zona"`, `"Mozo de almacén"`.
 
 Cardinalidad N:M
 
 ## Empleado — trabaja en — Zona
-
+Registra en qué áreas específicas del vivero desarrolla su actividad diaria un empleado, permitiendo medir su productividad.
 * **tarea:** actividad que realiza el empleado dentro de la zona.
   **Ejemplos:** `"Reposición"`, `"Mantenimiento"`, `"Atención al cliente"`.
 
@@ -204,5 +205,5 @@ Este atributo aparece tanto en **Vivero** como en **Zona**.
   * **Zona:** dependiente de **Vivero**. Una zona no puede existir si no está asociada a un vivero concreto.
   * **Bonificación:** dependiente de **Cliente**. No existe de manera aislada, siempre debe pertenecer al cliente que generó ese beneficio.
 
-* **Programa Tajinaste Plus:** La generación de bonificaciones están restringidas a aquellos clientes que pertenecen al programa Tajinaste Plus. Por lo que solo los clientes que tengan un valor asignado en el atributo `fecha_plus` podrán participar en la relación **recibe** asociada a la entidad **Bonificación**
+* **Programa Tajinaste Plus:** La generación de bonificaciones están restringidas a aquellos clientes que pertenecen al programa Tajinaste Plus. Solo los clientes que tengan un valor asignado en el atributo `fecha_plus` podrán participar en la relación **recibe** asociada a la entidad **Bonificación**
 
